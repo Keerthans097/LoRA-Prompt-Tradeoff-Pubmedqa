@@ -1,0 +1,38 @@
+# python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env
+.env.*
+token.txt
+
+# notebooks
+.ipynb_checkpoints/
+*.nbconvert.ipynb
+
+# data / outputs / models / logs
+runs_pubmedqa/
+artifacts/
+outputs/
+logs/
+checkpoints/
+*.pt
+*.bin
+*.safetensors
+*.ckpt
+*.onnx
+
+# caches
+.cache/
+.huggingface/
+datasets/
+huggingface/
+wandb/
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
