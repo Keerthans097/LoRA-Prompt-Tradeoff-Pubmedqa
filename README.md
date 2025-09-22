@@ -108,13 +108,3 @@ model = PeftModel.from_pretrained(base, "Keerthan097/LoRA-Prompt-Tradeoff-PubMed
 
 ---
 
-## Citation
-```
-@misc{keerthan2025lora,
-  title={LoRA vs Prompt Engineering Trade-off on PubMedQA},
-  author={Keerthan S.},
-  year={2025},
-  howpublished={GitHub},
-  url={https://github.com/Keerthans097/LoRA-Prompt-Tradeoff-Pubmedqa}
-}
-```
