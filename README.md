@@ -108,9 +108,7 @@ model = PeftModel.from_pretrained(base, "Keerthan097/LoRA-Prompt-Tradeoff-PubMed
 | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | meta-llama/Meta-Llama-3.1-8B | qlora | 1000 | 16 | 5 | 3.00E-05 | 0.9133 | 0.8542 | 0.6295 | 4065.93 | 1.045 | 7942.92 | 16886 | 16829.31 |
 | meta-llama/Meta-Llama-3.1-8B | qlora | 1000 | 8 | 5 | 3.00E-05 | 0.9133 | 0.8542 | 0.6297 | 4001.03 | 1.062 | 7702.92 | 16426 | 16345.21 |
-| meta-llama/Meta-Llama-3.1-8B | qlora (old metric) | 1000 | 8 | 5 | 3.00E-05 | 0.8333 | 0.8201 | 1.2064 | 4580.75 | - | 3217.46 | 4290 | 3892.98 |
 | meta-llama/Meta-Llama-3.1-8B | qlora | 1000 | 4 | 5 | 3.00E-05 | 0.9133 | 0.8542 | 0.6298 | 3908.34 | 1.087 | 7582.92 | 16156 | 16104.09 |
-| meta-llama/Meta-Llama-3.1-8B | qlora (old metric) | 1000 | 4 | 5 | 2.00E-05 | 0.4600 | 0.4040 | 1.5436 | 577.89 | 1.298 | - | - | - |
 | meta-llama/Meta-Llama-3.1-8B | qlora | 512 | 16 | 7 | 2.00E-05 | 0.9133 | 0.8475 | 0.6564 | 3356.89 | 1.068 | 7942.92 | 16886 | 16829.31 |
 | meta-llama/Meta-Llama-3.1-8B | qlora | 512 | 8 | 7 | 2.00E-05 | 0.9133 | 0.8475 | 0.6561 | 3308.16 | 1.083 | 7702.92 | 16426 | 16345.21 |
 | meta-llama/Meta-Llama-3.1-8B | qlora | 512 | 4 | 7 | 2.00E-05 | 0.9133 | 0.8475 | 0.6563 | 3297.87 | 1.087 | 7582.92 | 16156 | 16104.09 |
@@ -119,7 +117,34 @@ model = PeftModel.from_pretrained(base, "Keerthan097/LoRA-Prompt-Tradeoff-PubMed
 | meta-llama/Meta-Llama-3.1-8B | qlora | 128 | 8 | 10 | 1.00E-05 | 0.8133 | 0.7620 | 0.8409 | 1182.45 | 1.082 | 7702.92 | 16426 | 16345.21 |
 | meta-llama/Meta-Llama-3.1-8B | qlora | 128 | 4 | 15 | 1.00E-05 | 0.8400 | 0.8184 | 0.7952 | 1772.56 | 1.083 | 7582.92 | 16166 | 16104.06 |
 
+---
+## Prompt-Based Baseline Results
 
+
+| Mode          | Train Split | Test Accuracy | Test Macro F1 | GPU Mem Allocated (MB) | GPU Mem Reserved (MB) | Runtime (s) |
+|---------------|-------------|---------------|---------------|-------------------------|-----------------------|-------------|
+| prompt/zero   | 1000        | 0.6867        | 0.4714        | 6834.69                 | 9656.00               | 204.68      |
+| prompt/domain | 1000        | 0.6933        | 0.4829        | 6834.69                 | 9656.00               | 204.68      |
+| prompt/cot    | 1000        | 0.6933        | 0.4850        | 6834.69                 | 9656.00               | 204.68      |
+| prompt/zero   | 512         | 0.6867        | 0.4714        | 6834.69                 | 9656.00               | 216.80      |
+| prompt/domain | 512         | 0.6933        | 0.4829        | 6834.69                 | 9656.00               | 216.80      |
+| prompt/cot    | 512         | 0.6933        | 0.4850        | 6834.69                 | 9656.00               | 216.80      |
+| prompt/zero   | 128         | 0.6867        | 0.4714        | 6834.69                 | 9656.00               | 176.15      |
+| prompt/domain | 128         | 0.6933        | 0.4829        | 6834.69                 | 9656.00               | 176.15      |
+| prompt/cot    | 128         | 0.6933        | 0.4850        | 6834.69                 | 9656.00               | 176.15      |
+
+
+
+---
+## Scoring Method:
+ 
+Logits-Based Scoring 
+- Instead of generating, the model is scored directly on fixed verbalizers:
+  - **yes → `" yes"`**
+  - **no → `" no"`**
+  - **maybe → `" maybe"`**
+- For each candidate label, we compute the **log-likelihood** of producing that token sequence given the prompt.
+- The label with the highest probability is selected as the prediction.
 ---
 
 ##  Notes
