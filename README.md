@@ -117,21 +117,32 @@ model = PeftModel.from_pretrained(base, "Keerthan097/LoRA-Prompt-Tradeoff-PubMed
 | meta-llama/Meta-Llama-3.1-8B | qlora | 128 | 8 | 10 | 1.00E-05 | 0.8133 | 0.7620 | 0.8409 | 1182.45 | 1.082 | 7702.92 | 16426 | 16345.21 |
 | meta-llama/Meta-Llama-3.1-8B | qlora | 128 | 4 | 15 | 1.00E-05 | 0.8400 | 0.8184 | 0.7952 | 1772.56 | 1.083 | 7582.92 | 16166 | 16104.06 |
 
+
+### Best LoRA Run (R=16, Train Split = 1000)
+
+- **Model:** meta-llama/Meta-Llama-3.1-8B  
+- **Rank:** 16  
+- **Epochs:** 5  
+- **Learning Rate:** 3e-5  
+- **Test Accuracy:** 0.9133  
+- **Macro F1:** 0.8542  
+
+<img width="804" height="678" alt="LoRA Confusion Matrix" src="https://github.com/user-attachments/assets/33f7065a-51e2-4510-86dc-ba14dc9edda7" />
+
 ---
-## Prompt-Based Baseline Results
+## Prompt-Based Results (meta-llama/Meta-Llama-3.1-8B-Instruct)
 
-
-| Mode          | Train Split | Test Accuracy | Test Macro F1 | GPU Mem Allocated (MB) | GPU Mem Reserved (MB) | Runtime (s) |
-|---------------|-------------|---------------|---------------|-------------------------|-----------------------|-------------|
-| prompt/zero   | 1000        | 0.6867        | 0.4714        | 6834.69                 | 9656.00               | 204.68      |
-| prompt/domain | 1000        | 0.6933        | 0.4829        | 6834.69                 | 9656.00               | 204.68      |
-| prompt/cot    | 1000        | 0.6933        | 0.4850        | 6834.69                 | 9656.00               | 204.68      |
-| prompt/zero   | 512         | 0.6867        | 0.4714        | 6834.69                 | 9656.00               | 216.80      |
-| prompt/domain | 512         | 0.6933        | 0.4829        | 6834.69                 | 9656.00               | 216.80      |
-| prompt/cot    | 512         | 0.6933        | 0.4850        | 6834.69                 | 9656.00               | 216.80      |
-| prompt/zero   | 128         | 0.6867        | 0.4714        | 6834.69                 | 9656.00               | 176.15      |
-| prompt/domain | 128         | 0.6933        | 0.4829        | 6834.69                 | 9656.00               | 176.15      |
-| prompt/cot    | 128         | 0.6933        | 0.4850        | 6834.69                 | 9656.00               | 176.15      |
+| Model                                | Mode          | Train Split | Test Accuracy | Test Macro F1 | GPU Mem Allocated (MB) | GPU Mem Reserved (MB) | Runtime (s) |
+|--------------------------------------|---------------|-------------|---------------|---------------|-------------------------|-----------------------|-------------|
+| meta-llama/Meta-Llama-3.1-8B-Instruct | prompt/zero   | 1000        | 0.6867        | 0.4714        | 6834.69                 | 9656.00               | 204.68      |
+| meta-llama/Meta-Llama-3.1-8B-Instruct | prompt/domain | 1000        | 0.6933        | 0.4829        | 6834.69                 | 9656.00               | 204.68      |
+| meta-llama/Meta-Llama-3.1-8B-Instruct | prompt/cot    | 1000        | 0.6933        | 0.4850        | 6834.69                 | 9656.00               | 204.68      |
+| meta-llama/Meta-Llama-3.1-8B-Instruct | prompt/zero   | 512         | 0.6867        | 0.4714        | 6834.69                 | 9656.00               | 216.80      |
+| meta-llama/Meta-Llama-3.1-8B-Instruct | prompt/domain | 512         | 0.6933        | 0.4829        | 6834.69                 | 9656.00               | 216.80      |
+| meta-llama/Meta-Llama-3.1-8B-Instruct | prompt/cot    | 512         | 0.6933        | 0.4850        | 6834.69                 | 9656.00               | 216.80      |
+| meta-llama/Meta-Llama-3.1-8B-Instruct | prompt/zero   | 128         | 0.6867        | 0.4714        | 6834.69                 | 9656.00               | 176.15      |
+| meta-llama/Meta-Llama-3.1-8B-Instruct | prompt/domain | 128         | 0.6933        | 0.4829        | 6834.69                 | 9656.00               | 176.15      |
+| meta-llama/Meta-Llama-3.1-8B-Instruct | prompt/cot    | 128         | 0.6933        | 0.4850        | 6834.69                 | 9656.00               | 176.15      |
 
 
 
@@ -139,12 +150,14 @@ model = PeftModel.from_pretrained(base, "Keerthan097/LoRA-Prompt-Tradeoff-PubMed
 ## Scoring Method:
  
 Logits-Based Scoring 
-- Instead of generating, the model is scored directly on fixed verbalizers:
-  - **yes → `" yes"`**
-  - **no → `" no"`**
-  - **maybe → `" maybe"`**
-- For each candidate label, we compute the **log-likelihood** of producing that token sequence given the prompt.
-- The label with the highest probability is selected as the prediction.
+
+During evaluation, we employed **logits-based scoring** instead of relying solely on raw text generation.  
+This approach computes the log-probability of candidate answers (`yes`, `no`, `maybe`) directly from the model’s output distribution.
+
+- For each prompt, the model outputs logits over the vocabulary at the final position.  
+- We restrict these logits to only the tokens corresponding to our label set.  
+- The predicted label is chosen as the one with the **highest probability** among these restricted options.  
+
 ---
 
 ##  Notes
