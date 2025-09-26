@@ -130,20 +130,16 @@ model = PeftModel.from_pretrained(base, "Keerthan097/LoRA-Prompt-Tradeoff-PubMed
 <img width="804" height="678" alt="LoRA Confusion Matrix" src="https://github.com/user-attachments/assets/33f7065a-51e2-4510-86dc-ba14dc9edda7" />
 
 ---
-## Prompt-Based Results (meta-llama/Meta-Llama-3.1-8B-Instruct)
+### Prompt-based Results (Zero-shot, Domain-specific, and CoT)
 
-| Model                                | Mode          | Train Split | Test Accuracy | Test Macro F1 | GPU Mem Allocated (MB) | GPU Mem Reserved (MB) | Runtime (s) |
-|--------------------------------------|---------------|-------------|---------------|---------------|-------------------------|-----------------------|-------------|
-| meta-llama/Meta-Llama-3.1-8B-Instruct | prompt/zero   | 1000        | 0.6867        | 0.4714        | 6834.69                 | 9656.00               | 204.68      |
-| meta-llama/Meta-Llama-3.1-8B-Instruct | prompt/domain | 1000        | 0.6933        | 0.4829        | 6834.69                 | 9656.00               | 204.68      |
-| meta-llama/Meta-Llama-3.1-8B-Instruct | prompt/cot    | 1000        | 0.6933        | 0.4850        | 6834.69                 | 9656.00               | 204.68      |
-| meta-llama/Meta-Llama-3.1-8B-Instruct | prompt/zero   | 512         | 0.6867        | 0.4714        | 6834.69                 | 9656.00               | 216.80      |
-| meta-llama/Meta-Llama-3.1-8B-Instruct | prompt/domain | 512         | 0.6933        | 0.4829        | 6834.69                 | 9656.00               | 216.80      |
-| meta-llama/Meta-Llama-3.1-8B-Instruct | prompt/cot    | 512         | 0.6933        | 0.4850        | 6834.69                 | 9656.00               | 216.80      |
-| meta-llama/Meta-Llama-3.1-8B-Instruct | prompt/zero   | 128         | 0.6867        | 0.4714        | 6834.69                 | 9656.00               | 176.15      |
-| meta-llama/Meta-Llama-3.1-8B-Instruct | prompt/domain | 128         | 0.6933        | 0.4829        | 6834.69                 | 9656.00               | 176.15      |
-| meta-llama/Meta-Llama-3.1-8B-Instruct | prompt/cot    | 128         | 0.6933        | 0.4850        | 6834.69                 | 9656.00               | 176.15      |
-
+| Model                      | Mode          | Test Acc | Test Macro F1 |
+|----------------------------|---------------|----------|---------------|
+| Meta-LLaMA-3.1-8B (Base)   | prompt/zero   | 0.673    | 0.606         |
+| Meta-LLaMA-3.1-8B (Base)   | prompt/domain | 0.713    | 0.507         |
+| Meta-LLaMA-3.1-8B (Base)   | prompt/cot    | 0.700    | 0.631         |
+| Meta-LLaMA-3.1-8B-Instruct | prompt/zero   | 0.587    | 0.376         |
+| Meta-LLaMA-3.1-8B-Instruct | prompt/domain | 0.373    | 0.190         |
+| Meta-LLaMA-3.1-8B-Instruct | prompt/cot    | 0.660    | 0.453         |
 
 
 ---
